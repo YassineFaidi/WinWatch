@@ -1,0 +1,87 @@
+# Vector Configuration - TCP to ClickHouse with String Mapping
+# Save as: /etc/vector/vector.yaml
+
+# Source: Receive TCP logs from NXLog
+sources:
+  windows_logs_tcp:
+    type: "socket"
+    address: "0.0.0.0:1234"    # Replace 1234 with your desired TCP port
+    mode: "tcp"
+    decoding:
+      codec: "json"
+    framing:
+      method: "newline_delimited"
+
+# Transform: Map fields to ClickHouse table structure
+transforms:
+  map_to_clickhouse:
+    type: "remap"
+    inputs: ["windows_logs_tcp"]
+    source: |
+      # Map timestamp (convert to string with fallback)
+      .timestamp = to_string(.EventTime) ?? to_string(.timestamp) ?? to_string(now())
+      
+      # Map core identification fields
+      .hostname = to_string(.Hostname) ?? "-"
+      .event_id = to_string(.EventID) ?? "-"
+      .event_type = to_string(.EventType) ?? "-"
+      .source_name = to_string(.SourceName) ?? "-"
+      
+      # Map message (clean up if it's an array)
+      if is_array(.Message) {
+          .message = join!(.Message, " ")
+      } else {
+          .message = to_string(.Message) ?? "-"
+      }
+      
+      # Map additional fields
+      .channel = to_string(.Channel) ?? "-"
+      .category = to_string(.Category) ?? "-"
+      .severity = to_string(.Severity) ?? to_string(.EventType) ?? "-"
+      .process_name = to_string(.ProcessName) ?? "-"
+      .subject_user_name = to_string(.SubjectUserName) ?? "-"
+      .target_user_name = to_string(.TargetUserName) ?? "-"
+      
+      # Map new important fields
+      .logon_type = to_string(.LogonType) ?? "-"
+      .process_id = to_string(.ProcessID) ?? "-"
+      .ip_address = to_string(.IpAddress) ?? "-"
+      .record_number = to_string(.RecordNumber) ?? "-"
+      
+      # Remove all other fields to keep only what we need
+      . = {
+          "timestamp": .timestamp,
+          "hostname": .hostname,
+          "event_id": .event_id,
+          "event_type": .event_type,
+          "source_name": .source_name,
+          "message": .message,
+          "channel": .channel,
+          "category": .category,
+          "severity": .severity,
+          "process_name": .process_name,
+          "subject_user_name": .subject_user_name,
+          "target_user_name": .target_user_name,
+          "logon_type": .logon_type,
+          "process_id": .process_id,
+          "ip_address": .ip_address,
+          "record_number": .record_number
+      }
+
+# Sink: Send to ClickHouse
+sinks:
+  clickhouse_logs:
+    type: "clickhouse"
+    inputs: ["map_to_clickhouse"]
+    endpoint: "http://YOUR_CLICKHOUSE_HOST:8123"    # Replace with your ClickHouse server IP/hostname
+    table: "windows_logs"
+    database: "logs"
+    compression: "gzip"
+
+  # Optional: Console output for debugging
+  console_debug:
+    type: "console"
+    inputs: ["map_to_clickhouse"]
+    encoding:
+      codec: "json"
+    target: "stdout"
