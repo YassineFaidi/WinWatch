@@ -198,11 +198,3 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 * Provide environment details and steps to reproduce
 
 ---
-
-## 🔄 Version History
-
-* **v1.0.0** - Initial release with full pipeline integration
-
-  * Nxlog → Vector → ClickHouse → Dashboard
-
----
