@@ -64,10 +64,10 @@ cd WinWatch
 Import the provided SQL file to create the database and tables:
 
 ```bash
-clickhouse-client --multiquery < configs/clickhouse/setup.sql
+clickhouse-client --multiquery < configs/clickhouse/schema.sql
 ```
 
-* `setup.sql` contains all necessary SQL commands to create the database and logs table.
+* `schema.sql` contains all necessary SQL commands to create the database and logs table.
 * Make sure ClickHouse is running and accessible.
 
 ### 3. Configure the Pipeline
@@ -133,7 +133,7 @@ Open your browser and navigate to:
 ```
 WinWatch/
 ├── configs/                 
-│   ├── clickhouse/          # ClickHouse configs & setup.sql
+│   ├── clickhouse/          # ClickHouse configs & schema.sql
 │   ├── nxlog/               # Nxlog configs (Windows)
 │   ├── vector/              # Vector configs (Ubuntu)
 │
@@ -160,7 +160,7 @@ WinWatch/
 
 * **Frontend Port**: `3000` (Vite default)
 * **Backend Port**: `3001`
-* **Database**: ClickHouse (`localhost:8123`) — tables created from `configs/clickhouse/setup.sql`
+* **Database**: ClickHouse (`localhost:8123`) — tables created from `configs/clickhouse/schema.sql`
 * **Vector Listener**: TCP (`0.0.0.0:6000`)
 * **Nxlog**: Configured to forward Windows logs to the server TCP port
 
