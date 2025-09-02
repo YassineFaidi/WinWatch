@@ -1,7 +1,6 @@
 # WinWatch
 
-**WinWatch** is a comprehensive log analytics pipeline and visualization dashboard.  
-It collects Windows logs via **Nxlog**, forwards them through **Vector** on an Ubuntu server, stores them in **ClickHouse**, and finally provides an interactive **web dashboard** for querying and visualizing logs.
+**WinWatch** is a comprehensive log analytics pipeline and visualization dashboard. It collects Windows logs via **Nxlog**, forwards them through **Vector** on an Ubuntu server, stores them in **ClickHouse**, and finally provides an interactive **web dashboard** for querying and visualizing logs.
 
 ![WinWatch Dashboard](/frontend/public/screenshots/dashboard.png)
 
