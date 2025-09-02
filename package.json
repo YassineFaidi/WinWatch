@@ -1,19 +1,30 @@
 {
-  "name": "winwatch-backend",
+  "name": "winwatch-log-analytics",
   "version": "1.0.0",
-  "description": "WinWatch Backend - Windows Log Pipeline Dashboard",
+  "description": "Log Analytics Dashboard with Node.js backend and React frontend",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "build": "cd frontend && npm run build",
+    "install-all": "npm install && cd frontend && npm install"
   },
   "dependencies": {
     "express": "^4.18.2",
     "cors": "^2.8.5",
-    "axios": "^1.6.0"
+    "helmet": "^7.1.0",
+    "morgan": "^1.10.0",
+    "dotenv": "^16.3.1",
+    "clickhouse": "^2.6.0",
+    "winston": "^3.11.0",
+    "express-rate-limit": "^7.1.5",
+    "compression": "^1.7.4"
   },
   "devDependencies": {
-    "nodemon": "^3.0.1"
-  }
+    "nodemon": "^3.0.2"
+  },
+  "keywords": ["logs", "analytics", "dashboard", "clickhouse", "express", "react"],
+  "author": "WinWatch Team",
+  "license": "MIT"
 }
 
