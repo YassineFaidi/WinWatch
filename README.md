@@ -1,7 +1,3 @@
-Understood ✅ You want the **entire README.md in one file**, ready to copy-paste.
-Here it is:
-
-````markdown
 # WinWatch  
 
 <p align="center">
